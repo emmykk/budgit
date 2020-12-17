@@ -15,14 +15,23 @@ Happy coding!
 CONFIG 
 
 MAC -> create a file in environment/test.sh with the format
+
 export DB_CONNECTION_DATABASE = "<database>"
+  
 export DB_CONNECTION_USERNAME = "<database username>"
+  
 export DB_CONNECTION_PASSWORD = "<db password>"
+  
 export DB_CONNECTION_HOST = "<db host>"
   
  If you are unfortunate and are on windows create a file in environment/test-windows.ps1 with the format
+ 
 $env:DB_CONNECTION_DATABASE="<database>"
+  
 $env:DB_CONNECTION_USERNAME="<database username>"
+  
 $env:DB_CONNECTION_PASSWORD="<db password>"
+  
 $env:DB_CONNECTION_HOST="<db host>"
+  
 npm run test
