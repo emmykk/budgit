@@ -1,8 +1,8 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
-const { sequelizeCredentials } = require('./config/config.ts');
+const { dbCredsForSequelize } = require('./config/config.ts');
 
 const models = require("./models");
-const dataBase = new Sequelize(sequelizeCredentials);
+const dataBase = new Sequelize(dbCredsForSequelize);
 
 const pingDb = async () => {
   try {
