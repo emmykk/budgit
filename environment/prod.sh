@@ -1,1 +1,0 @@
-export DB_CONNECTION_STRING = "postgres://frrlztwmmfnqfv:5b11507adb3f8becbaa9be4d59d91f25408e04b70e5b3455ba94bd84f10e0e92@ec2-54-204-96-190.compute-1.amazonaws.com:5432/d3e08p4h1e5jgg";
