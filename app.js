@@ -7,39 +7,39 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
-const passport = require("passport");
-const localStrategy = require("passport-local").Strategy;
+// const passport = require("passport-local");
+// const localStrategy = require("passport-local").Strategy;
 
-passport.use(
-  new Strategy(function (username, password, callback) {
-    // db.users.findByUsername(username, function(err, user) {
-    //   if (err) { return callback(err); }
-    //   if (!user) { return callback(null, false); }
-    //   if (user.password != password) { return callback(null, false); }
-    //   return callback(null, user);
-    // });
-  })
-);
+// passport.use(
+//   new Strategy(function (username, password, callback) {
+//     // db.users.findByUsername(username, function(err, user) {
+//     //   if (err) { return callback(err); }
+//     //   if (!user) { return callback(null, false); }
+//     //   if (user.password != password) { return callback(null, false); }
+//     //   return callback(null, user);
+//     // });
+//   })
+// );
 
-passport.serializeUser(function (user, callback) {
-  callback(null, user.id);
-});
+// passport.serializeUser(function (user, callback) {
+//   callback(null, user.id);
+// });
 
-passport.deserializeUser(function (id, callback) {
-  db.users.findById(id, function (err, user) {
-    if (err) {
-      return callback(err);
-    }
-    callback(null, user);
-  });
-});
+// passport.deserializeUser(function (id, callback) {
+//   db.users.findById(id, function (err, user) {
+//     if (err) {
+//       return callback(err);
+//     }
+//     callback(null, user);
+//   });
+// });
 
 var app = express();
 
 global.jest = require("jest");
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
