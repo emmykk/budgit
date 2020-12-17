@@ -2,6 +2,14 @@
 
 No frills budget tracking by user-defined categories.
 
+## To Run:
+
+First, setup DB Config (see DB Config section):
+
+Then, run:
+
+`npm run start:local`
+
 ## Contributing:
 
 Please use an _imperative_ commit style!
