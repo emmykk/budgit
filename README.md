@@ -17,7 +17,8 @@ Happy coding!
 
 MAC -> create a file in environment/test.sh with the format
 
-```export DB_CONNECTION_DATABASE = "<database>"
+```
+export DB_CONNECTION_DATABASE = "<database>"
   
 export DB_CONNECTION_USERNAME = "<database username>"
   
