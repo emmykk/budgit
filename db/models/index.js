@@ -5,9 +5,9 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const db = {};
-const { sequelizeCredentials } = require('../config/config.ts');
+const { dbCredsForSequelize } = require('../config/config.ts');
 
-let sequelize = new Sequelize(sequelizeCredentials);
+let sequelize = new Sequelize(dbCredsForSequelize);
 
 fs
   .readdirSync(__dirname)

@@ -1,4 +1,4 @@
-const sequelizeCredentials = 
+const dbCredsForSequelize = 
 {
   database: process.env.DB_CONNECTION_DATABASE,
   username: process.env.DB_CONNECTION_USERNAME,
@@ -14,4 +14,4 @@ const sequelizeCredentials =
   }
 }
 
-export { sequelizeCredentials };
+export { dbCredsForSequelize };
