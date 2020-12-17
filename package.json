@@ -5,7 +5,7 @@
   "scripts": {
     "start:local": "source environment/test.sh && node ./bin/www",
     "test:local": "source environment/test.sh && nyc jest",
-    "test:local:windows": "powershell .\\environment\\test-windows.ps1", 
+    "test:local:windows": "powershell .\\environment\\test-windows.ps1",
     "test": "nyc jest --detectOpenHandles"
   },
   "jest": {
@@ -26,6 +26,7 @@
     "passport-local": "^1.0.0",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
+    "prettier": "^2.2.1",
     "sequelize": "^6.3.5",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.1",
