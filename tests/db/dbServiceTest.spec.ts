@@ -7,7 +7,7 @@ describe("DB Tests", () => {
   });
 
   it("Can connect to the the db", async () => {
-    expect(await dbService.pingDb()).toBe("DB Auth successful");
+    expect(await dbService.connectToDb()).toBe("DB Auth successful");
   });
 
   describe("Users Table", () => {

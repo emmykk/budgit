@@ -4,7 +4,7 @@ const { dbCredsForSequelize } = require('./config/config.ts');
 const models = require("./models");
 const dataBase = new Sequelize(dbCredsForSequelize);
 
-const pingDb = async () => {
+const connectToDb = async () => {
   try {
     await dataBase.authenticate();
     return "DB Auth successful";
@@ -42,4 +42,4 @@ const cleanUpTestData = async () => {
   }
 };
 
-export { pingDb, getAllUsers, insertUser, cleanUpTestData };
+export { connectToDb, getAllUsers, insertUser, cleanUpTestData };
