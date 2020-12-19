@@ -29,6 +29,20 @@ const insertUser = async ({ username, email, password }) => {
   }
 };
 
+const getUserByUsername = async (username, callback) => {
+  try {
+    const result = await models.User.findOne({
+      where: { username: username },
+    });
+
+    return result
+      ? callback(result)
+      : callback(null, "An error occurred fetching the result");
+  } catch (err) {
+    return callback(null, `Failed to clean users: ${err.toString()}`);
+  }
+};
+
 const getAllUsers = async () => {
   try {
     const users = await models.User.findAll();
@@ -54,4 +68,5 @@ module.exports = {
   insertUser,
   cleanUpTestData,
   disconnect,
+  getUserByUsername,
 };
