@@ -17,27 +17,23 @@ router.post("/users", (req, res, next) => {
 router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
 
-  if (!username) {
-    console.log("NO USERNAME");
+  if (!username)
     return res.status(422).json({
       errors: {
         username: "is required",
       },
     });
-  }
 
-  if (!password) {
-    console.log("NO PASSWORD");
+  if (!password)
     return res.status(422).json({
       errors: {
         password: "is required",
       },
     });
-  }
 
   return passport.authenticate(
     "local",
-    { session: false },
+    { session: true },
     (err, passportUser) => {
       if (err) {
         console.log(err);
