@@ -5,41 +5,48 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const dbService = require("./db/dbservice.ts");
 
-// const passport = require("passport-local");
-// const localStrategy = require("passport-local").Strategy;
+/****** PASSPORT STRATEGY SETUP */
+passport.use(
+  new LocalStrategy((username, password, done) => {
+    dbService.getUserByUsername(username, (user, err = null) => {
+      if (err) {
+        console.log(err);
+        return done(err);
+      }
+      if (!user) return done(null, false, { message: "Incorrect username." });
+      if (!user.password == password) {
+        return done(null, false, { message: "Incorrect password." });
+      }
 
-// passport.use(
-//   new Strategy(function (username, password, callback) {
-//     // db.users.findByUsername(username, function(err, user) {
-//     //   if (err) { return callback(err); }
-//     //   if (!user) { return callback(null, false); }
-//     //   if (user.password != password) { return callback(null, false); }
-//     //   return callback(null, user);
-//     // });
-//   })
-// );
+      return done((err = null), user);
+    });
+  })
+);
 
-// passport.serializeUser(function (user, callback) {
-//   callback(null, user.id);
-// });
+passport.serializeUser(function (user, callback) {
+  callback(null, user.id);
+});
 
-// passport.deserializeUser(function (id, callback) {
-//   db.users.findById(id, function (err, user) {
-//     if (err) {
-//       return callback(err);
-//     }
-//     callback(null, user);
-//   });
-// });
-
+passport.deserializeUser(function (id, callback) {
+  db.users.findById(id, function (err, user) {
+    if (err) {
+      return callback(err);
+    }
+    callback(null, user);
+  });
+});
+/******* */
 var app = express();
 
 global.jest = require("jest");
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -52,7 +59,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
