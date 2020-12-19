@@ -1,5 +1,5 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
-const { dbCredsForSequelize } = require('./config/config.ts');
+const { dbCredsForSequelize } = require("./config/config.ts");
 
 const models = require("./models");
 const dataBase = new Sequelize(dbCredsForSequelize);
@@ -13,15 +13,19 @@ const connectToDb = async () => {
   }
 };
 
-const insertUser = async (username, email, password) => {
+const insertUser = async ({ username, email, password }) => {
   try {
-    return await models.User.create({
-      username: username,
-      email: email,
-      password: password,
-    });
+    if (username && email && password) {
+      return await models.User.create({
+        username,
+        email,
+        password,
+      });
+    } else {
+      return "Improper formatting";
+    }
   } catch (err) {
-    return `Failed to retreive users: ${err.toString()}`;
+    return `Failed to insert user: ${err.toString()}`;
   }
 };
 
@@ -42,4 +46,12 @@ const cleanUpTestData = async () => {
   }
 };
 
-export { connectToDb, getAllUsers, insertUser, cleanUpTestData };
+const disconnect = () => dataBase.close();
+
+module.exports = {
+  connectToDb,
+  getAllUsers,
+  insertUser,
+  cleanUpTestData,
+  disconnect,
+};
