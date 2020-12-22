@@ -94,14 +94,13 @@ router.get(
   }
 );
 
+// Can add successRedirect '/' option and failureRedirect: '/login'
 router.post(
   "/login",
-  passport.authenticate("local", { session: false }),
+  passport.authenticate("local", { session: false, failureFlash: true }),
   (req, res) => {
     // authentication was successful.
     // `req.user` contains the authenticated user.
-    console.log(req.user);
-
     res.send({ token: req.user });
   }
 );
