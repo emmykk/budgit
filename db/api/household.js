@@ -15,18 +15,13 @@ const addHousehold = async (household) => {
           userId: household.userId,
         });
 
-        return new Promise((resolve) =>
-          resolve("New household added for user")
-        );
+        return "New household added for user";
       } catch (err) {
-        return new Promise((done) => done(`An error occurred: ${err}`));
+        return `An error occurred: ${err}`;
       }
-    } else
-      return new Promise((resolve) =>
-        resolve("This user already belongs to a household")
-      );
+    } else return "This user already belongs to a household";
   } catch (err) {
-    return new Promise((done) => done(err.toString()));
+    return err.toString();
   }
 };
 module.exports = {

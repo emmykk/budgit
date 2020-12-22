@@ -85,7 +85,7 @@ router.get(
       const userId = jwt.decode(req.user, process.env.APP_JWT_SECRET).userId;
       try {
         const result = await getAllExpenses(userId);
-        res.send({ message: result });
+        res.send(result);
       } catch (err) {
         res.send({ message: err });
       }
@@ -95,6 +95,12 @@ router.get(
 );
 
 // Can add successRedirect '/' option and failureRedirect: '/login'
+/***
+ * Expecting req.body format of:
+ * username
+ * password
+ * see Passport Local Strategy in app.js
+ */
 router.post(
   "/login",
   passport.authenticate("local", { session: false, failureFlash: true }),

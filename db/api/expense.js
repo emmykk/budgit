@@ -37,13 +37,9 @@ const getAllExpenses = async (userId) => {
     const allExpenses = await models.Expense.findAll({
       where: { HouseholdId: householdId },
     });
-    return new Promise((resolve) =>
-      resolve({ body: allExpenses, message: null })
-    );
+    return { body: allExpenses, message: null };
   } catch (err) {
-    return new Promise((resolve) =>
-      resolve({ message: err.toString(), body: null })
-    );
+    return { message: err.toString(), body: null };
   }
 };
 
