@@ -78,11 +78,12 @@ router.get(
   passport.authenticate("bearer", { session: false }),
   /**
    * Get expenses for a user's household via a lookup in HouseholdMembers with userId.
+   * If successful, returns an obj with prop body: [ArrayOfExpenses]
    */
   async (req, res) => {
     const token = req.user;
     if (req.user) {
-      const userId = jwt.decode(req.user, process.env.APP_JWT_SECRET).userId;
+      const userId = jwt.decode(token, process.env.APP_JWT_SECRET);
       try {
         const result = await getAllExpenses(userId);
         res.send(result);

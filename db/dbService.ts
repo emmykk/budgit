@@ -41,7 +41,7 @@ const getUserById = async (userId, callback = null) => {
       ? callback(result)
       : callback(null, "An error occurred fetching the result");
   } catch (err) {
-    return callback(null, `Failed to clean users: ${err.toString()}`);
+    return callback(null, `${err.toString()}`);
   }
 };
 
