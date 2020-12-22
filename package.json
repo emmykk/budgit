@@ -5,8 +5,10 @@
   "scripts": {
     "start:local": "source environment/test.sh && node ./bin/www",
     "test:local": "source environment/test.sh && nyc jest",
+    "start:local:windows": "powershell .\\environment\\run-windows.ps1",
     "test:local:windows": "powershell .\\environment\\test-windows.ps1",
-    "test": "nyc jest --detectOpenHandles"
+    "test": "nyc jest --detectOpenHandles",
+    "generic:run": "node ./bin/www"
   },
   "jest": {
     "preset": "ts-jest",
