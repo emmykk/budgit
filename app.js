@@ -22,10 +22,10 @@ passport.use(
       if (response.body.dataValues.password !== password)
         return done((err = "The password was incorrect."));
       else {
-        const { id: userId } = response.body.dataValues.id;
+        const { id: userId } = response.body.dataValues;
         return done(
           (err = null),
-          (token = jwt.encode({ userId }, process.env.APP_JWT_SECRET))
+          (token = jwt.encode(userId, process.env.APP_JWT_SECRET))
         );
       }
     }
@@ -34,14 +34,12 @@ passport.use(
 passport.use(
   new BearerStrategy((token, done) => {
     try {
-      const { userId } = jwt.decode(token, process.env.APP_JWT_SECRET);
-
+      const userId = jwt.decode(token, process.env.APP_JWT_SECRET);
       dbService.getUserById(userId, (user, err) => {
-        if (err) return done(err);
-        return done((err = null), (res = token));
+        return err ? done(err) : done((err = null), (res = token));
       });
     } catch (error) {
-      done(null, false);
+      return done(null, false);
     }
   })
 );

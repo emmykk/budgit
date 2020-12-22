@@ -13,16 +13,12 @@ const addExpense = async (expenseData) => {
     const newExpense = await models.Expense.create({
       ...expenseData,
     });
-    return new Promise((resolve) =>
-      resolve({
-        message: `New expense of $${expenseData.amount} added to the householdId ${expenseData.HouseholdId}`,
-        body: newExpense,
-      })
-    );
+    return {
+      message: `New expense of $${expenseData.amount} added to the householdId ${expenseData.HouseholdId}`,
+      body: newExpense,
+    };
   } catch (err) {
-    return new Promise((resolve) =>
-      resolve({ message: err.toString(), body: null })
-    );
+    return { message: err.toString(), body: null };
   }
 };
 
