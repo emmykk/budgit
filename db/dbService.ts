@@ -1,9 +1,9 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 const { dbCredsForSequelize } = require("./config/config.ts");
-
 const models = require("./models");
 const dataBase = new Sequelize(dbCredsForSequelize);
 
+// Test in place to ensure dbCreds are correct
 const connectToDb = async () => {
   try {
     await dataBase.authenticate();
@@ -29,17 +29,36 @@ const insertUser = async ({ username, email, password }) => {
   }
 };
 
-const getUserByUsername = async (username, callback) => {
+const getUserById = async (userId, callback = null) => {
   try {
     const result = await models.User.findOne({
-      where: { username: username },
+      where: { id: userId },
     });
-
+    if (!callback) {
+      return result;
+    }
     return result
       ? callback(result)
       : callback(null, "An error occurred fetching the result");
   } catch (err) {
     return callback(null, `Failed to clean users: ${err.toString()}`);
+  }
+};
+
+const getUserByUsername = async (username) => {
+  try {
+    const result = await models.User.findOne({
+      where: { username: username },
+    });
+    return result
+      ? new Promise((resolve) => resolve({ body: result }))
+      : new Promise((resolve) =>
+          resolve({ error: "This username does not exist." })
+        );
+  } catch (err) {
+    return new Promise((resolve) => ({
+      error: `Failure to retrieve user: ${err.toString()}`,
+    }));
   }
 };
 
@@ -60,13 +79,16 @@ const cleanUpTestData = async () => {
   }
 };
 
+// Test helper method
 const disconnect = () => dataBase.close();
 
 module.exports = {
+  dataBase,
   connectToDb,
   getAllUsers,
   insertUser,
   cleanUpTestData,
   disconnect,
   getUserByUsername,
+  getUserById,
 };
