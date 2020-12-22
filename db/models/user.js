@@ -11,5 +11,5 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsTo(models.Household, { through: "HouseholdMembers" });
   };
 
-  return Expense;
+  return User;
 };
