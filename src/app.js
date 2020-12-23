@@ -9,7 +9,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const BearerStrategy = require("passport-http-bearer");
 const jwt = require("jwt-simple");
-const dbService = require("./db/dbservice.ts");
+const dbService = require("./db/api/user");
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {

@@ -1,14 +1,13 @@
-const models = require("../models/index.js");
+// const models = require("../models/index.js");
+// const {ExpenseData } = require("../../types/expenseTypes");
+type ExpenseData = {
+  HouseholdId: Number;
+  UserId: Number;
+  description: string;
+  amount: Number;
+};
 
-const addExpense = async (expenseData) => {
-  /**
-   * @param expenseData structure:
-   * object with properties:
-   * HouseholdId
-   * UserId
-   * description
-   * amount
-   *  */
+const addExpense = async (expenseData: ExpenseData) => {
   try {
     const newExpense = await models.Expense.create({
       ...expenseData,

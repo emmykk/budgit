@@ -1,9 +1,8 @@
 var express = require("express");
 var router = express.Router();
-const { insertUser } = require("../db/dbservice.ts");
-const { addHousehold } = require("../db/api/household.js");
-const { addExpense, getAllExpenses } = require("../db/api/expense.js");
-const dbService = require("../db/dbservice.ts");
+const { insertUser } = require("../db/api/user");
+const { addHousehold } = require("../db/api/household");
+const { addExpense, getAllExpenses } = require("../db/api/expense");
 const passport = require("passport");
 const jwt = require("jwt-simple");
 

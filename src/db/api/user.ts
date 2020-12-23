@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
-const { dbCredsForSequelize } = require("./config/config.ts");
-const models = require("./models");
+const { dbCredsForSequelize } = require("./../config/config");
+const models = require("../models/index");
 const dataBase = new Sequelize(dbCredsForSequelize);
 
 // Test in place to ensure dbCreds are correct
@@ -83,12 +83,11 @@ const cleanUpTestData = async () => {
 const disconnect = () => dataBase.close();
 
 module.exports = {
-  dataBase,
   connectToDb,
-  getAllUsers,
   insertUser,
+  getUserById,
+  getUserByUsername,
+  getAllUsers,
   cleanUpTestData,
   disconnect,
-  getUserByUsername,
-  getUserById,
 };

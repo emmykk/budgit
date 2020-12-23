@@ -1,6 +1,6 @@
 import { doesNotMatch } from "assert";
 
-const dbService = require("../../db/dbService.ts");
+const dbService = require("../../db/dbService");
 
 describe("DB Tests", () => {
   afterEach(async () => {
