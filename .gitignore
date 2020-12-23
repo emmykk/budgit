@@ -3,3 +3,4 @@ node_modules/*
 environment/*
 .nyc_output
 db/config/config.json
+dist/*
