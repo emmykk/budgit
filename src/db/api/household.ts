@@ -1,6 +1,6 @@
-const models = require("../models/index.js");
-
-const addHousehold = async (household) => {
+const addHousehold = async (
+  household: Household
+): Promise<DbResponse<Household>> => {
   try {
     const userAlreadyHasHousehold = await models.HouseholdMember.findOne({
       where: { userId: household.userId },
@@ -15,13 +15,20 @@ const addHousehold = async (household) => {
           userId: household.userId,
         });
 
-        return "New household added for user";
+        return {
+          message: "New household added for user",
+          body: newHousehold,
+        };
       } catch (err) {
-        return `An error occurred: ${err}`;
+        return { message: `An error occurred: ${err}`, body: null };
       }
-    } else return "This user already belongs to a household";
+    } else
+      return {
+        message: "This user already belongs to a household",
+        body: null,
+      };
   } catch (err) {
-    return err.toString();
+    return { message: err.toString(), body: null };
   }
 };
 module.exports = {

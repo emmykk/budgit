@@ -13,69 +13,79 @@ const connectToDb = async () => {
   }
 };
 
-const insertUser = async ({ username, email, password }) => {
+const insertUser = async ({
+  username,
+  email,
+  password,
+}: User): Promise<DbResponse<User>> => {
   try {
     if (username && email && password) {
-      return await models.User.create({
+      const newUser = await models.User.create({
         username,
         email,
         password,
       });
+      return { message: "New user created", body: newUser };
     } else {
-      return "Improper formatting";
+      return { message: "Improper formatting", body: null };
     }
   } catch (err) {
-    return `Failed to insert user: ${err.toString()}`;
+    return { message: `Failed to insert user: ${err.toString()}`, body: null };
   }
 };
 
-const getUserById = async (userId, callback = null) => {
+const getUserById = async (userId: Number): Promise<DbResponse<User>> => {
   try {
     const result = await models.User.findOne({
       where: { id: userId },
     });
-    if (!callback) {
-      return result;
+    if (result) {
+      return { message: "fetched user", body: result };
     }
-    return result
-      ? callback(result)
-      : callback(null, "An error occurred fetching the result");
+    return { message: "An error occurred fetching the result", body: null };
   } catch (err) {
-    return callback(null, `${err.toString()}`);
+    return { message: `${err.toString()}`, body: null };
   }
 };
 
-const getUserByUsername = async (username) => {
+const getUserByUsername = async (
+  username: String
+): Promise<DbResponse<User>> => {
   try {
     const result = await models.User.findOne({
       where: { username: username },
     });
     return result
-      ? new Promise((resolve) => resolve({ body: result }))
-      : new Promise((resolve) =>
-          resolve({ error: "This username does not exist." })
-        );
+      ? { message: "User retreived", body: result }
+      : { message: "This username does not exist.", body: null };
   } catch (err) {
-    return new Promise((resolve) => ({
-      error: `Failure to retrieve user: ${err.toString()}`,
-    }));
+    return {
+      message: `Failure to retrieve user: ${err.toString()}`,
+      body: null,
+    };
   }
 };
 
-const getAllUsers = async () => {
+const getAllUsers = async (): Promise<DbResponse<User[]>> => {
   try {
     const users = await models.User.findAll();
-    return users;
+    return { message: "Retreived users", body: users };
   } catch (err) {
-    return `Failed to retreive users: ${err.toString()}`;
+    return {
+      message: `Failed to retreive users: ${err.toString()}`,
+      body: null,
+    };
   }
 };
 
-const cleanUpTestData = async () => {
+const cleanUpTestData = async (): Promise<DbResponse<Number>> => {
   try {
-    return await models.User.destroy({ where: { email: "test@test.com" } });
+    return {
+      message: "User deleted",
+      body: await models.User.destroy({ where: { email: "test@test.com" } }),
+    };
   } catch (err) {
-    return `Failed to clean users: ${err.toString()}`;
+    return { message: `Failed to clean users: ${err.toString()}`, body: null };
   }
 };
 

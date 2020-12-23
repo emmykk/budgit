@@ -32,12 +32,17 @@ passport.use(
   })
 );
 passport.use(
-  new BearerStrategy((token, done) => {
+  new BearerStrategy(async (token, done) => {
     try {
       const userId = jwt.decode(token, process.env.APP_JWT_SECRET);
-      dbService.getUserById(userId, (user, err) => {
-        return err ? done(err) : done((err = null), (res = token));
-      });
+      const userResponse = await dbService.getUserById(userId);
+      if (userResponse.body == null) {
+        return done(userResponse.message);
+      }
+      return done((err = null), (res = token));
+      // dbService.getUserById(userId, (user, err) => {
+      //   return err ? done(err) : done((err = null), (res = token));
+      // });
     } catch (error) {
       return done(null, false);
     }

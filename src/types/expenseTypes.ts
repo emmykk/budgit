@@ -1,4 +1,4 @@
-export type ExpenseData = {
+type Expense = {
   HouseholdId: Number;
   UserId: Number;
   description: string;

@@ -1,13 +1,6 @@
-// const models = require("../models/index.js");
-// const {ExpenseData } = require("../../types/expenseTypes");
-type ExpenseData = {
-  HouseholdId: Number;
-  UserId: Number;
-  description: string;
-  amount: Number;
-};
-
-const addExpense = async (expenseData: ExpenseData) => {
+const addExpense = async (
+  expenseData: Expense
+): Promise<DbResponse<Expense>> => {
   try {
     const newExpense = await models.Expense.create({
       ...expenseData,
@@ -21,7 +14,7 @@ const addExpense = async (expenseData: ExpenseData) => {
   }
 };
 
-const getAllExpenses = async (userId) => {
+const getAllExpenses = async (userId: Number): Promise<DbResponse<Expense>> => {
   //  find household by userId in HouseholdMember table
   const usersHousehold = await models.HouseholdMember.findOne({
     where: { userId: userId },
@@ -32,7 +25,7 @@ const getAllExpenses = async (userId) => {
     const allExpenses = await models.Expense.findAll({
       where: { HouseholdId: householdId },
     });
-    return { body: allExpenses, message: null };
+    return { message: null, body: allExpenses };
   } catch (err) {
     return { message: err.toString(), body: null };
   }
