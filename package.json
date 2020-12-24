@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start:local": "source environment/test.sh && npx tsc && node ./bin/www",
+    "start:local": "source environment/test.sh && npx tsc-watch --onSuccess \"./dist/bin/www.js\"",
     "test:local": "source environment/test.sh && nyc jest",
     "start:local:windows": "powershell .\\environment\\run-windows.ps1",
     "test:local:windows": "powershell .\\environment\\test-windows.ps1",
