@@ -1,6 +1,6 @@
 # budgit-api
 
-No frills budget tracking by user-defined categories.
+No frills household budget tracking by categories.
 
 ## To Run:
 
