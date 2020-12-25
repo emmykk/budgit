@@ -8,6 +8,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Expenses");
+    await queryInterface.removeColumn("Expenses, description");
   },
 };

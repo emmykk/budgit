@@ -1,5 +1,15 @@
 const models = require("../models/index.js");
 
+const getHouseholdByUserId = async (userId) =>
+  await models.HouseholdMember.findOne({
+    where: { userId: userId },
+  });
+
+const getHouseholdById = async (householdId) =>
+  await models.Household.findOne({
+    where: { id: householdId },
+  });
+
 const addHousehold = async (household) => {
   try {
     const userAlreadyHasHousehold = await models.HouseholdMember.findOne({
@@ -26,4 +36,6 @@ const addHousehold = async (household) => {
 };
 module.exports = {
   addHousehold,
+  getHouseholdByUserId,
+  getHouseholdById,
 };

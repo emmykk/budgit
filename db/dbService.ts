@@ -22,7 +22,7 @@ const insertUser = async ({ username, email, password }) => {
         password,
       });
     } else {
-      return "Improper formatting";
+      return "Improper formatting - missing email, username, or password";
     }
   } catch (err) {
     return `Failed to insert user: ${err.toString()}`;
@@ -51,10 +51,8 @@ const getUserByUsername = async (username) => {
       where: { username: username },
     });
     return result
-      ? new Promise((resolve) => resolve({ body: result }))
-      : new Promise((resolve) =>
-          resolve({ error: "This username does not exist." })
-        );
+      ? { body: result }
+      : { error: "This username does not exist." };
   } catch (err) {
     return new Promise((resolve) => ({
       error: `Failure to retrieve user: ${err.toString()}`,

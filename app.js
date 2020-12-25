@@ -10,6 +10,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const BearerStrategy = require("passport-http-bearer");
 const jwt = require("jwt-simple");
 const dbService = require("./db/dbservice.ts");
+const bcrypt = require("bcrypt");
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -19,15 +20,19 @@ passport.use(
       // User does not exist
       return done((err = response.error));
     } else {
-      if (response.body.dataValues.password !== password)
-        return done((err = "The password was incorrect."));
-      else {
-        const { id: userId } = response.body.dataValues;
-        return done(
-          (err = null),
-          (token = jwt.encode(userId, process.env.APP_JWT_SECRET))
-        );
-      }
+      // Check password
+      const hash = response.body.dataValues.password;
+      bcrypt.compare(password, hash, (err, result) => {
+        // result == true
+        if (err) return done((err = "The password was incorrect."));
+        else {
+          const { id: userId } = response.body.dataValues;
+          return done(
+            (err = null),
+            (token = jwt.encode(userId, process.env.APP_JWT_SECRET))
+          );
+        }
+      });
     }
   })
 );
