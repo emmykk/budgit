@@ -15,8 +15,6 @@ const connectToDb = async () => {
 
 const insertUser = async ({ username, email, password }) => {
   try {
-    console.log(username, email, password);
-
     if (username && email && password) {
       return await models.User.create({
         username,
@@ -48,13 +46,10 @@ const getUserById = async (userId, callback = null) => {
 };
 
 const getUserByUsername = async (username) => {
-  console.log("GETTING USER");
   try {
     const result = await models.User.findOne({
       where: { username: username },
     });
-    console.log("THIS IS TEH RESULT");
-    console.log(result);
     return result
       ? { body: result }
       : { error: "This username does not exist." };
