@@ -18,7 +18,7 @@ const addExpense = async (expenseData) => {
       body: newExpense,
     };
   } catch (err) {
-    return { message: err.toString(), body: null };
+    return { error: err.toString() };
   }
 };
 

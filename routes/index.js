@@ -1,26 +1,64 @@
 var express = require("express");
 var router = express.Router();
 const { insertUser } = require("../db/dbservice.ts");
-const { addHousehold } = require("../db/api/household.js");
+const {
+  addHousehold,
+  getHouseholdByUserId,
+  getHouseholdById,
+} = require("../db/api/household.js");
 const { addExpense, getAllExpenses } = require("../db/api/expense.js");
 const dbService = require("../db/dbservice.ts");
 const passport = require("passport");
 const jwt = require("jwt-simple");
+const bcrypt = require("bcrypt");
 
 router.get("/", (req, res, next) => {
   res.send({ message: "" });
 });
 
-router.post("/users", (req, res, next) => {
-  insertUser(req.body);
+router.post("/users", async (req, res) => {
+  // req.body has username and password
+  const { username, password, email } = req.body;
+  const userAlreadyExists = !(
+    await dbService.getUserByUsername(username)
+  ).hasOwnProperty("error");
+  const saltRounds = 10;
+  if (userAlreadyExists)
+    return res.send({ error: "This username already exists." });
+  if (!email || !password || !username)
+    return res.send({
+      error:
+        "A required field is missing. Please check to see you inserted an email, username, and password.",
+    });
+
+  try {
+    bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
+      console.log("HASED");
+      console.log(hashedPassword);
+      const newUser = await insertUser({
+        username,
+        password: hashedPassword,
+        email,
+      });
+      res.send(newUser);
+    });
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 });
 
 router.get(
-  "/households",
+  "/household",
   passport.authenticate("bearer", { session: false }),
-  (req, res) => {
-    if (req.user) res.send({ token: req.user, household: true });
-    else res.send({ error: "ERRROR" });
+  async (req, res) => {
+    const token = req.user;
+    if (token) {
+      const userId = jwt.decode(token, process.env.APP_JWT_SECRET);
+      const { householdId } = (await getHouseholdByUserId(userId)).dataValues;
+      const household = await getHouseholdById(householdId);
+      res.send(household);
+    } else res.send({ error: "You mnust be logged in to continue." });
   }
 );
 
@@ -34,7 +72,7 @@ router.post(
   async (req, res) => {
     const token = req.user;
     if (req.user) {
-      const userId = jwt.decode(req.user, process.env.APP_JWT_SECRET).userId;
+      const userId = jwt.decode(req.user, process.env.APP_JWT_SECRET);
       const household = { ...req.body, userId };
 
       if (household.name) {
@@ -59,9 +97,16 @@ router.post(
    * householdId - integer (store on FE)
    */
   async (req, res) => {
-    if (req.user) {
-      const userId = jwt.decode(req.user, process.env.APP_JWT_SECRET).userId;
-      const expenseData = { ...req.body, UserId: userId };
+    const token = req.user;
+    if (token) {
+      const userId = jwt.decode(token, process.env.APP_JWT_SECRET);
+      const { householdId } = (await getHouseholdByUserId(userId)).dataValues;
+      const expenseData = {
+        ...req.body,
+        UserId: userId,
+        HouseholdId: householdId,
+      };
+
       try {
         const result = await addExpense(expenseData);
         res.send({ message: result });

@@ -15,6 +15,8 @@ const connectToDb = async () => {
 
 const insertUser = async ({ username, email, password }) => {
   try {
+    console.log(username, email, password);
+
     if (username && email && password) {
       return await models.User.create({
         username,
@@ -22,7 +24,7 @@ const insertUser = async ({ username, email, password }) => {
         password,
       });
     } else {
-      return "Improper formatting";
+      return "Improper formatting - missing email, username, or password";
     }
   } catch (err) {
     return `Failed to insert user: ${err.toString()}`;
@@ -46,15 +48,16 @@ const getUserById = async (userId, callback = null) => {
 };
 
 const getUserByUsername = async (username) => {
+  console.log("GETTING USER");
   try {
     const result = await models.User.findOne({
       where: { username: username },
     });
+    console.log("THIS IS TEH RESULT");
+    console.log(result);
     return result
-      ? new Promise((resolve) => resolve({ body: result }))
-      : new Promise((resolve) =>
-          resolve({ error: "This username does not exist." })
-        );
+      ? { body: result }
+      : { error: "This username does not exist." };
   } catch (err) {
     return new Promise((resolve) => ({
       error: `Failure to retrieve user: ${err.toString()}`,

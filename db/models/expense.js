@@ -20,8 +20,24 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Expense.associate = (models) => {
-    Expense.belongsTo(models.User);
-    Expense.belongsTo(models.Household);
+    Expense.belongsTo(models.User, {
+      foreignKey: {
+        name: "UserId",
+        allowNull: false,
+      },
+    });
+    Expense.belongsTo(models.Household, {
+      foreignKey: {
+        name: "HouseholdId",
+        allowNull: false,
+      },
+    });
+    Expense.belongsTo(models.Category, {
+      foreignKey: {
+        name: "CategoryId",
+        allowNull: false,
+      },
+    });
   };
 
   return Expense;
