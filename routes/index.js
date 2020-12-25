@@ -17,7 +17,6 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/users", async (req, res) => {
-  // req.body has username and password
   const { username, password, email } = req.body;
   const userAlreadyExists = !(
     await dbService.getUserByUsername(username)
@@ -33,14 +32,12 @@ router.post("/users", async (req, res) => {
 
   try {
     bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
-      console.log("HASED");
-      console.log(hashedPassword);
       const newUser = await insertUser({
         username,
         password: hashedPassword,
         email,
       });
-      res.send(newUser);
+      return res.send(newUser);
     });
   } catch (err) {
     console.log(err);
@@ -76,10 +73,7 @@ router.post(
       const household = { ...req.body, userId };
 
       if (household.name) {
-        // const result = await dbService.getAllUsers();
-        console.log("THEE NAME");
         const result = await addHousehold(household);
-        console.log(result);
         res.send({ message: result });
       }
     } else
